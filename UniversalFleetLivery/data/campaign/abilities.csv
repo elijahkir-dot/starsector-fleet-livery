@@ -1,0 +1,2 @@
+name,id,type,tags,activationDays,activationCooldown,durationDays,deactivationDays,deactivationCooldown,unlockedAtStart,defaultForAIFleet,musicSuppression,uiOn,uiOff,uiLoop,worldOn,worldOff,worldLoop,icon,plugin,ai,desc,sortOrder
+Fleet Livery,ufl_manage_livery,DURATION,,0,0,0,0,0,false,false,,,,,,,,graphics/ufl/livery.png,ufl.LiveryAbility,,Preview and set your navy's paint scheme.,9800

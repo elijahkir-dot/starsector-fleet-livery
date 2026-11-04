@@ -1,0 +1,20 @@
+plugins { id 'java' }
+version = '0.1.1-alpha'
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+sourceSets {
+    main { java { srcDirs = ['src'] } }
+    test { java { srcDirs = ['tests'] } }
+}
+def gamePath = providers.gradleProperty('starsectorDir').orElse(providers.environmentVariable('STARSECTOR_HOME'))
+def coreDir = gamePath.map { p -> file(p + '/starsector-core').isDirectory() ? file(p + '/starsector-core') : file(p) }
+if (!coreDir.isPresent()) throw new GradleException('Set -PstarsectorDir=/path/to/Starsector or STARSECTOR_HOME')
+dependencies { compileOnly fileTree(dir: coreDir.get(), include: ['*.jar']); testImplementation fileTree(dir: coreDir.get(), include: ['*.jar']) }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 17 }
+jar {
+    archiveFileName = 'UniversalFleetLivery.jar'
+    destinationDirectory = layout.projectDirectory.dir('jars')
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+tasks.register('coreChecks', JavaExec) { dependsOn testClasses; classpath = sourceSets.test.runtimeClasspath; mainClass = 'ufl.CoreTest'; args coreDir.get().absolutePath; systemProperty 'java.awt.headless', 'true' }
+tasks.register('lifecycleChecks', JavaExec) { dependsOn testClasses; classpath = sourceSets.test.runtimeClasspath; mainClass = 'ufl.LifecycleTest' }

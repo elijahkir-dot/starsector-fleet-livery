@@ -1,0 +1,1 @@
+PASS package validation: manifest, scripts, class version, source/resources, safe ZIP paths and no bundled game dependencies

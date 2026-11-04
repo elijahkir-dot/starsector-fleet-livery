@@ -1,0 +1,10 @@
+{
+  "java": "openjdk version \"17.0.20\" 2026-07-21\nOpenJDK Runtime Environment (build 17.0.20+8-1-24.04-Ubuntu)\nOpenJDK 64-Bit Server VM (build 17.0.20+8-1-24.04-Ubuntu, mixed mode, sharing)",
+  "compiler": "ECJ ecj.jar",
+  "api_sha256": "432c58660be37ff8b345c293ea53687dc61f179646e95baed36f7f3b2568b55a",
+  "java_sources": 14,
+  "jar_sha256": "e4652866e0c7d6dcb9d64b7980cc9b05bed4d5ccf9b24401f27c3b35396dbe6f",
+  "game_jars_bundled": false,
+  "tests": "CoreTest and LifecycleTest passed; not live campaign tests",
+  "native_security_tests": "PASS; actual RC8 restricted loader; see script-security-tests.txt"
+}

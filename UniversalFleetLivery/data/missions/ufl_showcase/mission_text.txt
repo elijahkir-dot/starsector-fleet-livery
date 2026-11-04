@@ -1,0 +1,5 @@
+Technical livery showcase for Universal Fleet Livery.
+
+The player fleet has six procedurally recoloured Wolf frigates and an original comparison ship. The enemy fleet uses unmodified Wolves.
+
+Deploy all ships, pause, zoom in and inspect their hulls. The engine should retain sprite alignment, alpha edges, structural shading, turrets and phase-system behaviour. This fixture does not assert that the result has been accepted on your machine.

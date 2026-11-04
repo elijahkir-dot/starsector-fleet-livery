@@ -1,0 +1,8 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+SECURITY_LOADER=com.fs.starfarer.loading.scripts.new
+GL_RENDERER=llvmpipe (LLVM 20.1.2, 256 bits)
+PASS: 16 implementation classes resolved through restricted loader
+PASS: optional lighting adapter dispatch under restricted loader (test stub, not GraphicsLib)
+PASS: 28 real RC8 native sprite draws; 322108 visible pixels; no GL errors
+PASS: 123 assertions; no disk texture cache or security changes
+NOT TESTED: live campaign UI/combat/refit/save-load, actual GraphicsLib

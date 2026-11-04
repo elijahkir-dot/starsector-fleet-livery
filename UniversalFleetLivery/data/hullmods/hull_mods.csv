@@ -1,0 +1,2 @@
+name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hiddenEverywhere,cost_frigate,cost_dest,cost_cruiser,cost_capital,script,desc,short,sModDesc,sprite
+Fleet Livery,ufl_livery,0,0,,,,,,true,true,0,0,0,0,ufl.LiveryHullmod,Runtime cosmetic sprite replacement.,,,graphics/ufl/livery.png

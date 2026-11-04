@@ -1,0 +1,6 @@
+{
+  "maxImagePixels": 4194304,
+  "maxSessionTextures": 256,
+  "maxTextureMB": 256,
+  "graphicsLibIntegration": true
+}

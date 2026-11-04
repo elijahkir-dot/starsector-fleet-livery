@@ -1,0 +1,25 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+GL_VENDOR=Mesa
+GL_RENDERER=llvmpipe (LLVM 20.1.2, 256 bits)
+PASS: 28 real engine sprites rendered with valid texture IDs, no GL errors; 349903 non-background pixels.
+PASS: generated absolute-path PNGs accepted by the actual RC8 SettingsAPI texture loader.
+1    [main] WARN  ufl.LiveryTextures  - UFL: leaving original appearance: graphics/ships/missing-ufl-test.png: Error loading [graphics/ships/missing-ufl-test.png] resource, not found in [/workspace/scratch/09e820ef9d1e/research/game/starsector]
+java.lang.RuntimeException: Error loading [graphics/ships/missing-ufl-test.png] resource, not found in [/workspace/scratch/09e820ef9d1e/research/game/starsector]
+	at com.fs.util.ooOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO.Ó00000(Unknown Source)
+	at com.fs.util.ooOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO.String(Unknown Source)
+	at com.fs.starfarer.loading.LoadingUtils.void(Unknown Source)
+	at com.fs.starfarer.settings.StarfarerSettings$1.openStream(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at ufl.NativeRenderTest.lambda$2(NativeRenderTest.java:88)
+	at jdk.proxy1/jdk.proxy1.$Proxy2.openStream(Unknown Source)
+	at ufl.LiveryTextures.get(LiveryTextures.java:47)
+	at ufl.NativeRenderTest.main(NativeRenderTest.java:170)
+3    [main] WARN  ufl.LiveryTextures  - UFL: leaving original appearance: graphics/ships/wolf/wolf_base.png: Session texture budget reached; raise limits or restart Starsector
+java.io.IOException: Session texture budget reached; raise limits or restart Starsector
+	at ufl.LiveryTextures.get(LiveryTextures.java:81)
+	at ufl.NativeRenderTest.main(NativeRenderTest.java:175)
+PASS: missing-image fallback and session texture budget guard.
+NOT TESTED: launcher, live combat, live refit, campaign UI, campaign save/load.

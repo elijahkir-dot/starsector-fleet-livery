@@ -1,0 +1,16 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+SECURITY_LOADER=com.fs.starfarer.loading.scripts.new
+GL_RENDERER=llvmpipe (LLVM 20.1.2, 256 bits)
+0    [main] WARN  ufl.LiveryTextures  - UFL: leaving original appearance: graphics/ships/wolf/wolf_base.png: File access and reflection are not allowed to scripts.
+java.lang.SecurityException: File access and reflection are not allowed to scripts.
+	at com.fs.starfarer.loading.scripts.new.loadClass(Unknown Source)
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+	at ufl.LiveryTextures.get(LiveryTextures.java:48)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at security.ScriptSecurityTest.call(ScriptSecurityTest.java:24)
+	at security.ScriptSecurityTest.main(ScriptSecurityTest.java:85)
+REPRODUCED LEGACY ERROR: graphics/ships/wolf/wolf_base.png: File access and reflection are not allowed to scripts.
