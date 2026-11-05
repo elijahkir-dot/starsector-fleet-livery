@@ -26,7 +26,7 @@ Starsector/mods/UniversalFleetLivery/mod_info.json
 
 Enable **Universal Fleet Livery** in the Starsector launcher.
 
-**Note:** The ZIP and compiled JAR have not yet been uploaded to this GitHub repository. Do not treat the repository's current contents as an installable release.
+Download the installable ZIP from the [Releases page](https://github.com/elijahkir-dot/starsector-fleet-livery/releases). Java source and the compiled JAR are also available in the `UniversalFleetLivery/` directory.
 
 ## First test
 
@@ -49,7 +49,7 @@ Target: **Starsector 0.98a-RC8 / Java 17**. Other game versions have not been ve
 
 ## Source, testing and credits
 
-The supplied 0.1.1-alpha package includes Java sources, build scripts, a changelog, architecture and compatibility notes, test reports and automated test fixtures. These will be published with the complete release package.
+The supplied 0.1.1-alpha package includes Java sources, build scripts, a changelog, architecture and compatibility notes, test reports and automated test fixtures. These are available in the repository and the complete release package.
 
 **Author:** Ely K  
 **License:** MIT for original UFL code and icon. Starsector and third-party art remain their respective owners' property.
