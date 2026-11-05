@@ -1,7 +1,7 @@
 {
   "id": "universal_fleet_livery",
   "name": "Universal Fleet Livery",
-  "author": "Ilias Kiritsis",
+  "author": "elijahkir-dot",
   "version": "0.1.1-alpha",
   "description": "Procedural fleet liveries, individual exceptions and inherited fleet standards. Early alpha: see compatibility and test reports.",
   "gameVersion": "0.98a-RC8",
