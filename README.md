@@ -51,7 +51,7 @@ Target: **Starsector 0.98a-RC8 / Java 17**. Other game versions have not been ve
 
 The supplied 0.1.1-alpha package includes Java sources, build scripts, a changelog, architecture and compatibility notes, test reports and automated test fixtures. These will be published with the complete release package.
 
-**Author:** Ilias Kiritsis  
+**Author:** Ely K  
 **License:** MIT for original UFL code and icon. Starsector and third-party art remain their respective owners' property.
 
 **Diable Avionics art used in test evidence:** Tartiflette and FlashFrozen; maintained by Caymon Joestar.
