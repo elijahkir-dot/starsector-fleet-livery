@@ -31,6 +31,13 @@ def main():
     assert source.read_bytes()==(ROOT/'data/missions/ufl_showcase/MissionDefinition.java').read_bytes()
     descriptor=json.loads((ROOT/'data/missions/ufl_showcase/descriptor.json').read_text())
     assert (ROOT/'data/missions/ufl_showcase'/descriptor['icon']).is_file()
+    catalogue=json.loads((ROOT/'data/config/ufl_palettes.json').read_text())['palettes']
+    ids=[item['id'] for item in catalogue]
+    assert len(ids)==18 and len(set(ids))==18 and not {'custom','original'}&set(ids)
+    assert {'imperial','naval','crimson','industrial','arctic'}<=set(ids)
+    for item in catalogue:
+        for channel in ('primary','secondary','accent'):
+            assert __import__('re').fullmatch('[0-9A-Fa-f]{6}',item[channel])
     if args.game:
         core=args.game.resolve()
         if (core/'starsector-core').is_dir():core/='starsector-core'

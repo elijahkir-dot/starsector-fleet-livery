@@ -1,5 +1,5 @@
 plugins { id 'java' }
-version = '0.1.1-alpha'
+version = '0.1.4-alpha'
 java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
 sourceSets {
     main { java { srcDirs = ['src'] } }

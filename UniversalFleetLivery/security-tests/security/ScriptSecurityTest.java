@@ -18,6 +18,7 @@ import org.lwjgl.opengl.*;
 public final class ScriptSecurityTest {
   private static SettingsAPI settings;
   private static ClassLoader loader;
+  private static boolean windows;
   private static int checks;
 
   private static void check(boolean ok, String message) {
@@ -38,26 +39,36 @@ public final class ScriptSecurityTest {
   }
 
   private static void bootstrap(File game, File mod) throws Exception {
-    try (JarFile jar = new JarFile(new File(game, "fs.common_obf.jar"))) {
-      for (Enumeration<JarEntry> entries = jar.entries(); entries.hasMoreElements(); ) {
-        String n = entries.nextElement().getName();
-        if (n.startsWith("com/fs/util/ooOOOO") && n.endsWith(".class") && n.indexOf('$') < 0) {
-          Class<?> r = Class.forName(n.substring(0, n.length() - 6).replace('/', '.'));
-          Object instance = null;
-          for (Method m : r.getDeclaredMethods())
-            if (Modifier.isStatic(m.getModifiers())
-                && m.getReturnType() == r
-                && m.getParameterCount() == 0) {
-              instance = m.invoke(null);
-              break;
-            }
-          r.getMethod("\u00d500000").invoke(instance);
-          r.getMethod("\u00d500000", String.class).invoke(instance, game.getAbsolutePath());
-          r.getMethod("\u00d500000", String.class).invoke(instance, mod.getAbsolutePath());
-          break;
+    Class<?> resources;
+    String rootMethod;
+    if (windows) {
+      resources = Class.forName("com.fs.util.C");
+      rootMethod = "class";
+    } else {
+      resources = null;
+      rootMethod = "\u00d500000";
+      try (JarFile jar = new JarFile(new File(game, "fs.common_obf.jar"))) {
+        for (Enumeration<JarEntry> entries = jar.entries(); entries.hasMoreElements(); ) {
+          String n = entries.nextElement().getName();
+          if (n.startsWith("com/fs/util/ooOOOO") && n.endsWith(".class") && n.indexOf('$') < 0) {
+            resources = Class.forName(n.substring(0, n.length() - 6).replace('/', '.'));
+            break;
+          }
         }
       }
     }
+    if (resources == null) throw new AssertionError("Unrecognised resource bootstrap");
+    Object instance = null;
+    for (Method m : resources.getDeclaredMethods())
+      if (Modifier.isStatic(m.getModifiers())
+          && m.getReturnType() == resources
+          && m.getParameterCount() == 0) {
+        instance = m.invoke(null);
+        break;
+      }
+    resources.getMethod(rootMethod).invoke(instance);
+    resources.getMethod(rootMethod, String.class).invoke(instance, game.getAbsolutePath());
+    resources.getMethod(rootMethod, String.class).invoke(instance, mod.getAbsolutePath());
     Constructor<?> c =
         Class.forName("com.fs.starfarer.settings.StarfarerSettings$1").getDeclaredConstructor();
     c.setAccessible(true);
@@ -126,9 +137,18 @@ public final class ScriptSecurityTest {
         f.setAccessible(true);
         if (f.get(null) == null) f.set(null, new org.json.JSONObject().put("devMode", false));
       }
+    try {
+      Class.forName("com.fs.starfarer.loading.scripts.B");
+      windows = true;
+    } catch (ClassNotFoundException expected) {
+      windows = false;
+    }
     ClassLoader restricted =
         (ClassLoader)
-            Class.forName("com.fs.starfarer.loading.scripts.new")
+            Class.forName(
+                    windows
+                        ? "com.fs.starfarer.loading.scripts.B"
+                        : "com.fs.starfarer.loading.scripts.new")
                 .getConstructor(ClassLoader.class)
                 .newInstance(ScriptSecurityTest.class.getClassLoader());
     for (String banned :
@@ -189,6 +209,29 @@ public final class ScriptSecurityTest {
           return;
         }
       }
+      if (args.length > 3 && args[3].equals("previous")) {
+        Object design =
+            workshop
+                ? Class.forName("usw.PaintDesign", true, loader)
+                    .getConstructor(paletteClass)
+                    .newInstance(palette)
+                : palette;
+        Class<?> designType = workshop ? design.getClass() : paletteClass;
+        String type = workshop ? "usw.PaintTextures" : "ufl.LiveryTextures";
+        Object result =
+            call(
+                type,
+                workshop ? "committed" : "get",
+                new Class[] {String.class, designType},
+                sample,
+                design);
+        String error = (String) Class.forName(type, true, loader).getField("lastError").get(null);
+        check(
+            result == null && error.contains("In-memory texture registration unavailable"),
+            "Expected old Windows registrar failure: " + error);
+        System.out.println("REPRODUCED 0.1.1 ERROR: " + error);
+        return;
+      }
       int classes = 0;
       try (JarFile archive = new JarFile(jar)) {
         for (Enumeration<JarEntry> entries = archive.entries(); entries.hasMoreElements(); ) {
@@ -217,7 +260,7 @@ public final class ScriptSecurityTest {
         sample,
         "graphics/ships/eagle/eagle_base.png",
         "graphics/ships/onslaught/onslaught_base.png",
-        "graphics/ships/paragon.png"
+        "graphics/ships/phase/zigguraut.png"
       };
       int[][] colors = {
         {0x171b24, 0xb29147, 0x8b1326},
@@ -271,6 +314,10 @@ public final class ScriptSecurityTest {
           sprite.renderAtCenter(80 + col * 160, 690 - row * 190);
           draws++;
         }
+      String backend = (String) call(pkg + ".NativeTextureBridge", "status", new Class[] {});
+      check(
+          backend.endsWith(windows ? ".super" : ".o00000"), "wrong platform registrar: " + backend);
+      System.out.println("PASS: native registrar " + backend);
       if (workshop) {
         Object source = call("usw.PaintSources", "get", new Class[] {String.class}, sample);
         Class<?> sc = source.getClass();
@@ -306,6 +353,7 @@ public final class ScriptSecurityTest {
         System.out.println(
             "PASS: 50 preview edits reuse one GPU texture; exact RGBA texels; deletion on close");
       }
+      PaletteMenuRenderTest.run(loader);
       // Signature-only adapter fixture: verifies MethodHandles execute under the security loader.
       Method adapter =
           Class.forName(pkg + (workshop ? ".PaintHullmod" : ".LiveryHullmod"), true, loader)

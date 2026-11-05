@@ -1,32 +1,90 @@
-Vanilla corpus: 30 bakes, 1482840 pixels, 745.8 ms total (includes image reads and alpha checks)
+Vanilla corpus: 30 bakes, 1482840 pixels, 234.8 ms total (includes image reads and alpha checks)
 PASS CoreTest: 55 checks
 
-0    [main] WARN  ufl.LiveryService  - UFL: skipped incompatible member bad-variant
+0    [main] WARN  ufl.LiveryService  - UFL: skipped scoped livery synchronization for bad-variant
 java.lang.IllegalStateException: intentional invalid variant
 	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
 	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
 	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
-	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:144)
-	at ufl.LiveryService.sync(LiveryService.java:82)
+	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:237)
+	at ufl.LiveryService.syncFleet(LiveryService.java:183)
+	at ufl.LiveryService.sync(LiveryService.java:143)
 	at ufl.LifecycleTest.main(LifecycleTest.java:282)
-7    [main] WARN  ufl.LiveryService  - UFL: skipped prewarming for bad-variant
+2    [main] WARN  ufl.LiveryService  - UFL: skipped prewarming for bad-variant
 java.lang.IllegalStateException: intentional invalid variant
 	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
 	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
 	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
-	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:144)
-	at ufl.LiveryService.palette(LiveryService.java:149)
-	at ufl.LiveryService.warm(LiveryService.java:199)
-	at ufl.LiveryService.warmOne(LiveryService.java:190)
+	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:237)
+	at ufl.LiveryService.palette(LiveryService.java:242)
+	at ufl.LiveryService.warm(LiveryService.java:292)
+	at ufl.LiveryService.warmOne(LiveryService.java:283)
 	at ufl.LifecycleTest.main(LifecycleTest.java:284)
-10   [main] WARN  ufl.LiveryService  - UFL: skipped cosmetic cleanup for bad-variant
+2    [main] WARN  ufl.LiveryService  - UFL: skipped cosmetic cleanup for bad-variant
 java.lang.IllegalStateException: intentional invalid variant
 	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
 	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
 	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
-	at ufl.LiveryService.removeTags(LiveryService.java:160)
-	at ufl.LiveryService.strip(LiveryService.java:167)
-	at ufl.LiveryService.safeStrip(LiveryService.java:179)
-	at ufl.LiveryService.beforeSave(LiveryService.java:217)
+	at ufl.LiveryService.removeTags(LiveryService.java:253)
+	at ufl.LiveryService.strip(LiveryService.java:260)
+	at ufl.LiveryService.safeStrip(LiveryService.java:272)
+	at ufl.LiveryService.beforeSave(LiveryService.java:310)
 	at ufl.LifecycleTest.main(LifecycleTest.java:289)
 PASS LifecycleTest: 20 checks using API doubles; live engine save/load NOT tested
+
+PASS CatalogueTest: 65 checks; 18 palettes, stable legacy IDs/colours, transparent pixels and atomic validation
+
+1    [main] WARN  ufl.LiveryDialog  - UFL preview failed
+java.lang.IllegalArgumentException: rendering not part of controller fixture
+	at ufl.DialogTest.lambda$15(DialogTest.java:141)
+	at ufl.DialogTest.lambda$0(DialogTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy13.loadTexture(Unknown Source)
+	at ufl.LiveryDialog.showPreview(LiveryDialog.java:414)
+	at ufl.LiveryDialog.root(LiveryDialog.java:76)
+	at ufl.LiveryDialog.init(LiveryDialog.java:32)
+	at ufl.DialogTest.main(DialogTest.java:145)
+9    [main] WARN  ufl.LiveryDialog  - UFL preview failed
+java.lang.IllegalArgumentException: rendering not part of controller fixture
+	at ufl.DialogTest.lambda$15(DialogTest.java:141)
+	at ufl.DialogTest.lambda$0(DialogTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy13.loadTexture(Unknown Source)
+	at ufl.LiveryDialog.showPreview(LiveryDialog.java:414)
+	at ufl.LiveryDialog.confirmation(LiveryDialog.java:310)
+	at ufl.LiveryDialog.optionSelected(LiveryDialog.java:650)
+	at ufl.DialogTest.main(DialogTest.java:185)
+9    [main] WARN  ufl.LiveryDialog  - UFL preview failed
+java.lang.IllegalArgumentException: rendering not part of controller fixture
+	at ufl.DialogTest.lambda$15(DialogTest.java:141)
+	at ufl.DialogTest.lambda$0(DialogTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy13.loadTexture(Unknown Source)
+	at ufl.LiveryDialog.showPreview(LiveryDialog.java:414)
+	at ufl.LiveryDialog.confirmation(LiveryDialog.java:310)
+	at ufl.LiveryDialog.stepPalette(LiveryDialog.java:267)
+	at ufl.LiveryDialog.optionSelected(LiveryDialog.java:587)
+	at ufl.DialogTest.main(DialogTest.java:191)
+10   [main] WARN  ufl.LiveryDialog  - UFL preview failed
+java.lang.IllegalArgumentException: rendering not part of controller fixture
+	at ufl.DialogTest.lambda$15(DialogTest.java:141)
+	at ufl.DialogTest.lambda$0(DialogTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy13.loadTexture(Unknown Source)
+	at ufl.LiveryDialog.showPreview(LiveryDialog.java:414)
+	at ufl.LiveryDialog.confirmation(LiveryDialog.java:310)
+	at ufl.LiveryDialog.stepPalette(LiveryDialog.java:267)
+	at ufl.LiveryDialog.optionSelected(LiveryDialog.java:583)
+	at ufl.DialogTest.main(DialogTest.java:192)
+15   [main] WARN  ufl.LiveryDialog  - UFL preview failed
+java.lang.IllegalArgumentException: rendering not part of controller fixture
+	at ufl.DialogTest.lambda$15(DialogTest.java:141)
+	at ufl.DialogTest.lambda$0(DialogTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy13.loadTexture(Unknown Source)
+	at ufl.LiveryDialog.showPreview(LiveryDialog.java:414)
+	at ufl.LiveryDialog.confirmation(LiveryDialog.java:310)
+	at ufl.LiveryDialog.optionSelected(LiveryDialog.java:650)
+	at ufl.DialogTest.main(DialogTest.java:218)
+PASS DialogTest: 24 checks using API doubles; palette reachability, staging and visual-picker handoff; real UI NOT tested
+
+PASS ScopeTest: 19 checks; independent ship/fleet/empire settings, migration, snapshots and scoped reset
+
+PASS DragRegressionTest: paint retained across pickup/drop and save callbacks while held; cleanup resumes after fleet UI closes; native UI interaction still needs retest
+
+PASS EmpireLifecycleTest: 18 API-double checks; ownership, lazy inflation, listener, independent scopes and multi-fleet save cleanup; actual NPC gameplay NOT tested

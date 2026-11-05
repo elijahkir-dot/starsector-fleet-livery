@@ -8,9 +8,10 @@ public final class LiveryModPlugin extends BaseModPlugin {
   @Override
   public void onApplicationLoad() {
     Config.load();
+    Palettes.load();
     Global.getLogger(LiveryModPlugin.class)
         .info(
-            "Universal Fleet Livery 0.1.1-alpha; runtime "
+            "Universal Fleet Livery 0.1.4-alpha; runtime "
                 + Global.getSettings().getVersionString());
     for (ModSpecAPI mod : Global.getSettings().getModManager().getEnabledModsCopy())
       Global.getLogger(LiveryModPlugin.class)

@@ -1,0 +1,32 @@
+Vanilla corpus: 30 bakes, 1482840 pixels, 251.3 ms total (includes image reads and alpha checks)
+PASS CoreTest: 55 checks
+
+1    [main] WARN  ufl.LiveryService  - UFL: skipped incompatible member bad-variant
+java.lang.IllegalStateException: intentional invalid variant
+	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
+	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
+	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:144)
+	at ufl.LiveryService.sync(LiveryService.java:82)
+	at ufl.LifecycleTest.main(LifecycleTest.java:282)
+3    [main] WARN  ufl.LiveryService  - UFL: skipped prewarming for bad-variant
+java.lang.IllegalStateException: intentional invalid variant
+	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
+	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
+	at ufl.LiveryService.hasOtherPaintjob(LiveryService.java:144)
+	at ufl.LiveryService.palette(LiveryService.java:149)
+	at ufl.LiveryService.warm(LiveryService.java:199)
+	at ufl.LiveryService.warmOne(LiveryService.java:190)
+	at ufl.LifecycleTest.main(LifecycleTest.java:284)
+3    [main] WARN  ufl.LiveryService  - UFL: skipped cosmetic cleanup for bad-variant
+java.lang.IllegalStateException: intentional invalid variant
+	at ufl.LifecycleTest.lambda$6(LifecycleTest.java:278)
+	at ufl.LifecycleTest.lambda$0(LifecycleTest.java:33)
+	at jdk.proxy1/jdk.proxy1.$Proxy1.getTags(Unknown Source)
+	at ufl.LiveryService.removeTags(LiveryService.java:160)
+	at ufl.LiveryService.strip(LiveryService.java:167)
+	at ufl.LiveryService.safeStrip(LiveryService.java:179)
+	at ufl.LiveryService.beforeSave(LiveryService.java:217)
+	at ufl.LifecycleTest.main(LifecycleTest.java:289)
+PASS LifecycleTest: 20 checks using API doubles; live engine save/load NOT tested

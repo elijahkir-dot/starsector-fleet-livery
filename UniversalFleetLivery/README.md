@@ -1,56 +1,70 @@
-# Universal Fleet Livery — 0.1.1 alpha
+# Universal Fleet Livery — 0.1.4 alpha
 
-**0.1.1-alpha fixes the shared script-security error in 0.1.0-alpha.** Close Starsector and replace the old mod directory completely. Keep the same mod ID. No extra library, launcher edit or security-setting change is required. The restricted-loader renderer regression passes; live campaign acceptance is still pending.
+Standalone procedural hull paint for **Starsector 0.98a-RC8 / Java 17**. No required GraphicsLib, LunaLib, MagicLib or Nexerelin dependency. This ZIP contains compiled code, full source, resources and build/test tools. Paint Workshop is a separate project and is not included.
 
+This update separates **Ship / Fleet / Empire** settings, simplifies the main menu and corrects cleanup during fleet-screen pickup/drop. The player confirmed visible fleet-screen recolouring in 0.1.2. The new scope and drag behaviour has automated regression evidence; a live campaign retest is still required. See `docs/TEST_REPORT.md`.
 
-A standalone, procedural hull-paint mod for **Starsector 0.98a-RC8 / Java 17**. No required mod dependencies.
+## Install and open
 
-**This is a compiled, installable alpha, not a gameplay-certified release.** The RC8 texture loader and native sprite renderer have been exercised successfully, including vanilla and two Diable Avionics hull images. A licensed campaign/combat session and the user's exact mod stack were unavailable. Combat/refit integration, the campaign menu and real save/load still require in-game acceptance. See `docs/TEST_REPORT.md` for the exact boundary.
+1. Close Starsector. Completely replace the previous `UniversalFleetLivery` folder with the folder from this ZIP. Keep only one installed version. The final path is `Starsector/mods/UniversalFleetLivery/mod_info.json`.
+2. Enable **Universal Fleet Livery** in the launcher.
+3. In the campaign ability picker, assign **Fleet Livery** to an ability slot and activate it. This mod uses its ability button, not the separate Workshop's G shortcut.
+4. The main menu has **Fleet Livery**, **Restore original fleet colours**, **Utilities**, and Close/Escape.
 
-## Install
+For a fresh renderer check, **Missions → Fleet Livery: Rendering Test** provides painted Wolves and an original comparison. Use a separate campaign save for initial acceptance of this alpha.
 
-1. Extract the ZIP into `Starsector/mods/`. The final path must be `mods/UniversalFleetLivery/mod_info.json`.
-2. Enable **Universal Fleet Livery** in the launcher. No GraphicsLib, LunaLib, MagicLib or Nexerelin dependency is required.
-3. First run **Missions → Fleet Livery: Rendering Test** on a copy of your installation. Deploy the six painted Wolves and the original comparison ship. Zoom in and check alignment, details and transparency.
-4. Load a separate save for the initial campaign checks. In the campaign ability picker, assign **Fleet Livery** to an ability slot and activate it.
+## Choose a scope
 
-If a launcher reports a different game version, consult `docs/COMPATIBILITY.md`. Do not assume changing `gameVersion` alone establishes compatibility.
+Open **Fleet Livery**, then choose:
 
-## Use
+| Scope | What it changes |
+|---|---|
+| Ship livery | One ship in your active fleet, selected through the visual grid or text list. |
+| Fleet livery | Your active fleet, or one activated non-station fleet belonging to the player faction. |
+| Empire livery | The inherited standard for eligible player-faction fleets. Existing fleet and ship exceptions remain. |
 
-- **Choose a fleet standard** offers Imperial (black/gold), Naval (blue/silver), Crimson (red/black), Industrial (gunmetal/orange), Arctic (white/blue), Custom, and Original.
-- Selecting a scheme opens an original/proposed hull preview. Choose **Set fleet default** to preserve exceptions, or **Apply to entire fleet** to clear exceptions and standardise every active ship.
-- **Ships, hull standards and size standards** lets you choose an individual ship, set its override, or define a standard for its base hull or hull size.
-- Precedence is **ship override → base hull rule → size rule → fleet default**. Original can be an explicit exemption. Clearing a rule restores inheritance.
-- **Custom → Edit custom colours / paint strength** accepts three six-digit RGB values and strength 0–100. Preview does not apply changes. Applying Custom updates the shared Custom template, including ships already assigned to it.
-- Newly acquired ships inherit the current policy. Rules apply to the active player fleet. Storage ships and ships transferred away lose the runtime paint attachment; returning with the same fleet-member ID restores their remembered rule. A ship recovered with a new ID is a new acquisition.
-- **Disable all liveries** retains preferences and removes runtime paint attachments. **Restore original appearances** clears fleet/size/hull/ship rules. Reopen refit to recreate its displayed ship after changes.
-- **Texture status / retry skipped images** retries missing/failed sources and reports the texture budget. Failures are logged with a `UFL:` prefix in `starsector.log`.
+A ship override wins over its fleet; a fleet override wins over the empire. Advanced hull and hull-size rules remain under **Utilities** and apply only to the active fleet: ship → hull → size → fleet → empire. **Original** is an explicit exemption; **Use inherited colours** removes that override.
 
-The ability may need assigning again if the game's ability-bar handling clears its slot during save cleanup; that behaviour is an in-game acceptance item.
+For fleets, **Set this fleet's standard** preserves exceptions. **Standardise this fleet** clears that fleet's ship exceptions and, for the active fleet, its hull/size rules; it asks for confirmation. **Use empire standard** removes only the fleet override, leaving more specific rules intact.
 
-## What is recoloured
+Empire's second Apply option sets the empire standard and lets the active fleet inherit it. It retains individual/hull/size exceptions. To make an already customised fleet completely uniform, standardise that fleet explicitly.
 
-The existing base hull image is procedurally remapped with continuous luminance/chroma masks. Alpha and image dimensions remain unchanged. Neutral surfaces use primary/secondary colours; saturated existing paint tends to become accent. Shading and panel detail remain visible, but the algorithm has no semantic understanding of hull geometry. A red manufacturer hull can become mostly gold in Imperial. The preview is the authority for a particular hull.
+**Restore original fleet colours** restores your current fleet, clears its individual/hull/size rules and gives it an Original fleet exemption. It keeps the empire standard, other fleet settings and remembered exceptions on ships elsewhere. To resume inheritance, choose Fleet livery → Your active fleet → a palette → Use empire standard.
 
-Separate weapons, engine flames, shields, phase glows, damage overlays and scripted animated parts retain their own rendering. Multi-module variants receive the same rule recursively, but modular ships need live testing. Existing MagicLib paintjobs take precedence: remove their paintjob to use UFL on that ship.
+## Preview and custom colours
 
-**The ordinary fleet-card thumbnails and campaign fleet silhouette are not recoloured by this alpha.** The livery menu provides its own base-hull preview; weapons and station modules are not assembled in that preview. The hidden cosmetic hullmod implements the base-hull swap for combat/refit-created ships; live integration remains unverified. Avoid conflating the native-renderer evidence with a tested campaign.
+Four colour cards per page show Primary / Secondary / Accent. Choose a numbered card to see original and proposed base-hull previews. Previous/Next scheme compares presets. Browsing and editing do not apply paint.
 
-## Files and configuration
+**Edit a copy of this scheme** opens three six-digit RGB hex fields and strength 0–100. Choose Preview, then Apply to the selected scope. Each Custom assignment saves its own colour snapshot: editing one ship no longer changes an earlier fleet or empire assignment. The last-used Custom draft is retained for reuse; named custom-palette management is not included.
 
-`data/config/ufl_settings.json` controls maximum image pixels, session texture count, estimated GPU texture budget and optional GraphicsLib integration. Defaults: 4,194,304 pixels per source, 256 generated textures, 256 MiB estimated generated texture memory.
+Factory palettes: Imperial, Naval, Crimson, Industrial, Arctic, Verdant, Obsidian, Solar, Royal, Cerulean, Copperhead, Vanguard, Ghost, Dusk, Hazard, Terran, Ceremonial and Rustbelt, plus Custom and Original. Contributors can add entries to `data/config/ufl_palettes.json`; no file editing is needed to use the shipped catalogue.
 
-Generated textures are held only in memory for the current game session. Sources are read through the game's resource API. No generated PNGs or temporary/cache directories are written. Saved palettes/designs rebuild their textures as needed after restarting. Old 0.1.0 cache files are unused and can be removed with the old mod directory.
+## Empire coverage and ownership
 
-## Save/load and removal
+Eligible fleets are the active player fleet and activated non-station fleets whose faction ID equals the sector's player-faction ID. Normal player-faction patrols can inherit. Dormant fleets are not forced into existence; painting runs after activation. Commission employers, allies and hired fleets with a different faction ID do not qualify.
 
-Preferences are stored as ordinary Java maps, strings and booleans in sector persistent data. Runtime hullmods, palette tags and the ability are stripped before saving and reattached after save or save failure. This design avoids requiring mod-defined classes in the saved preferences; **actual Starsector save/load and removal are not yet certified**.
+Station fleets, storage inventories, colony production lists and scripted renderers are not covered by empire automation. A manufactured ship inherits after joining an eligible fleet. Remembered ship overrides follow its fleet-member ID between eligible fleets; a newly recovered ship with a new ID is a new acquisition. Runtime paint is stripped after departure from eligible ownership, with cleanup deferred for temporarily held ships while the fleet screen is open.
 
-For removal, choose **Restore original appearances**, close the menu, save to a new slot, quit, disable the mod and verify that copy loads. Keep the original save until this passes. Unknown third-party systems that copy modified variants or ability objects into their own persistent data are outside UFL's cleanup boundary.
+Existing campaigns keep their old active-fleet standard on upgrade; they do not silently adopt empire colours. Legacy shared-Custom rules migrate to independent snapshots with the same colour values. New campaigns initially inherit Original from the empire.
 
-## Build and contribute
+## What gets painted
 
-All implementation source is in `src/`; `jars/UniversalFleetLivery.jar` is ready to load. See `docs/BUILD.md` for offline Python/JDK and Gradle build instructions, `docs/ARCHITECTURE.md` for design, and `docs/IN_GAME_CHECKLIST.md` for acceptance.
+The base hull image is remapped from its luminance and chroma. Dimensions and transparency are preserved, along with source shading and panel detail. Automatic masks infer colour families, not physical armour panels. Saturated original paint tends toward Accent; monochrome hulls may offer limited channel separation.
 
-License: MIT for UFL's implementation and original icon. Game art and evidence screenshots retain their source owners' rights. Diable Avionics credits: **Tartiflette and FlashFrozen**, maintained by Caymon Joestar. No game or third-party dependency jars are redistributed.
+Weapons, barrels, missiles, flames, glows, damage overlays and scripted add-on graphics use separate layers and keep their own colours. This can leave red weapon housings on a blue destroyer. Preview shows the base hull only. Multi-module variants receive rules recursively but need live testing. Known MagicLib paintjobs take priority; remove those paintjobs before using UFL on the same ship.
+
+The player has confirmed painted ordinary fleet cards. Native rendering tests also pass; combat/refit, all thumbnail paths and the full mod stack remain live acceptance items. Reopen an existing refit view after changing paint. No shared hull specification, original asset or other mod file is overwritten.
+
+## Utilities, limits and removal
+
+Utilities contains advanced hull/size rules, enable/disable, texture status/retry and the paint-layer explanation. Disabling retains preferences and strips runtime paint across eligible scopes.
+
+Generated textures are session-local, with no disk texture cache. `data/config/ufl_settings.json` caps source pixels (4,194,304), generated textures (256) and estimated generated GPU memory (256 MiB). Unsupported sources or exhausted budgets retain original appearance and log the cause. Errors appear in `starsector.log` with UFL context.
+
+Preferences use ordinary Java maps, strings and booleans. Runtime hullmods/tags and the ability are stripped before save and reapplied afterward; the script and inflation listener are transient. Real save/load and uninstall acceptance are still pending. Before removing the mod, disable liveries in Utilities, close the menu, save to a new slot, quit, disable UFL in the launcher and verify that copy loads. Keep the original save until verified. Copies hidden inside third-party private persistence are outside the cleanup boundary.
+
+## Build and documentation
+
+Source: `src/`. Ready-to-load JAR: `jars/UniversalFleetLivery.jar`. See `docs/BUILD.md`, `docs/ARCHITECTURE.md`, `docs/COMPATIBILITY.md`, `docs/TEST_REPORT.md` and `docs/IN_GAME_CHECKLIST.md`.
+
+MIT license covers UFL implementation and original icon. Evidence images retain the game/mod artists' rights. No game or dependency JARs are redistributed. See `docs/THIRD_PARTY_NOTICES.md`.

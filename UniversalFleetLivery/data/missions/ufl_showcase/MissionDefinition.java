@@ -11,7 +11,8 @@ public final class MissionDefinition implements MissionDefinitionPlugin {
   public void defineMission(MissionDefinitionAPI api) {
     api.initFleet(FleetSide.PLAYER, "UFL", FleetGoal.ATTACK, false);
     api.initFleet(FleetSide.ENEMY, "Original", FleetGoal.ATTACK, true);
-    api.setFleetTagline(FleetSide.PLAYER, "One hull, six livery palettes");
+    api.setFleetTagline(
+        FleetSide.PLAYER, "One hull, " + (Palettes.PRESETS.size() + 1) + " painted schemes");
     api.setFleetTagline(FleetSide.ENEMY, "Unmodified comparison hulls");
     int i = 0;
     for (Map.Entry<String, Palette> e : Palettes.PRESETS.entrySet()) {

@@ -1,0 +1,11 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+SECURITY_LOADER=com.fs.starfarer.loading.scripts.new
+GL_RENDERER=llvmpipe (LLVM 20.1.2, 256 bits)
+PASS: 19 implementation classes resolved through restricted loader
+PASS: native registrar com.fs.graphics.oOoO.o00000
+PASS: actual PaletteSwatches callbacks for all five pages / 500 frames; no GL errors
+PASS: actual LiveryDialog ship-preview callbacks: all 18 factory palettes on Wolf, Eagle, Ziggurat; 324 native sprite draws; no GL errors
+PASS: optional lighting adapter dispatch under restricted loader (test stub, not GraphicsLib)
+PASS: 28 real RC8 native sprite draws; 356318 visible pixels; no GL errors
+PASS: 127 assertions; no disk texture cache or security changes
+NOT TESTED: live campaign UI/combat/refit/save-load, actual GraphicsLib

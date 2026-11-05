@@ -1,59 +1,46 @@
 # Universal Fleet Livery
 
-**Procedural fleet-wide colour schemes for Starsector 0.98a-RC8 (Java 17).**
+**0.1.4-alpha · Starsector 0.98a-RC8 / Java 17 · Author: Ely K**
 
-Make ships from different factions and mods look like they belong to the same navy, without replacing their original hull artwork.
+Give ships from different factions and mods a consistent hull colour scheme, with separate ship, fleet and empire policies.
 
-> **0.1.1-alpha: early testing release.** The included package has passed automated sprite-rendering and restricted-script-loader regression tests, but **live campaign/combat integration, save/load and compatibility with full mod stacks have not yet been certified**.
+## Download
+
+**[Download UniversalFleetLivery-0.1.4-alpha.zip](https://github.com/elijahkir-dot/starsector-fleet-livery/releases/download/v0.1.4-alpha/UniversalFleetLivery-0.1.4-alpha.zip)**
+
+[Release notes and all downloads](https://github.com/elijahkir-dot/starsector-fleet-livery/releases).
 
 ## Features
 
-- Fleet-wide colour standards: **Imperial** (black/gold), **Naval** (blue/silver), **Crimson** (red/black), **Industrial** (gunmetal/orange), **Arctic** (white/blue), **Custom**, or **Original**.
-- Custom primary, secondary and accent RGB colours with adjustable paint strength.
-- Individual ship overrides, base-hull standards and hull-size standards.
-- Inheritance priority: **ship → base hull → hull size → fleet default**.
-- Newly acquired ships inherit your fleet's current livery policy.
-- Recolouring retains original hull shading, armour panels and transparency.
+- Separate **Ship livery**, **Fleet livery** and **Empire livery** scopes.
+- **18 factory palettes**, RGB Custom colours, paged swatches and draft editing.
+- Independent Custom colour assignments and a native visual ship picker.
+- New acquisitions inherit their applicable colour policy; ship overrides remain independent.
+- Empire defaults cover activated, non-station player-faction fleets.
+- Paint remains attached during fleet-screen pickup/drop.
+- **Restore original fleet colours** and advanced controls under **Utilities**.
 - No required GraphicsLib, LunaLib, MagicLib or Nexerelin dependency.
 
 ## Installation
 
-The installable ZIP is named **UniversalFleetLivery-0.1.1-alpha.zip**. Extract it to `Starsector/mods/` so the path is:
+1. Close Starsector and back up your save.
+2. Replace any old UniversalFleetLivery mod directory completely rather than merging files.
+3. Extract the installable ZIP into Starsector/mods/ so mods/UniversalFleetLivery/mod_info.json exists.
+4. Enable Universal Fleet Livery in the launcher.
+5. Assign the **Fleet Livery** campaign ability. Open **Fleet Livery**, then choose **Ship**, **Fleet** or **Empire**.
 
-```text
-Starsector/mods/UniversalFleetLivery/mod_info.json
-```
+The mod ID remains universal_fleet_livery. See the packaged README and compatibility notes for scope inheritance and configuration.
 
-Enable **Universal Fleet Livery** in the Starsector launcher.
+## Alpha status
 
-Download the installable ZIP from the [Releases page](https://github.com/elijahkir-dot/starsector-fleet-livery/releases). Java source and the compiled JAR are also available in the `UniversalFleetLivery/` directory.
+Automated scope, menu, Custom-colour, empire-lifecycle and drag regression tests and restricted-loader native rendering are recorded in the package. **Live campaign pickup/drop, actual NPC fleet behaviour, combat/refit, save/reload and the new menu layout still require in-game acceptance.** Test on a copied campaign save.
 
-## First test
+Ordinary fleet-card thumbnails and campaign silhouettes are not recoloured. Weapons, engine flames, shields and separate effects retain their own graphics. Paint Workshop is a separate project and is not included.
 
-1. Launch **Missions → Fleet Livery: Rendering Test** and inspect the painted ships.
-2. Test on a **copy of a campaign save**.
-3. Assign the **Fleet Livery** campaign ability and open the livery menu.
-4. Check refit, combat, ship transfers and save/reload behaviour before relying on it in a long-running campaign.
+## Source and credits
 
-## Known limitations
+The complete installable mod, Java sources, compiled JAR, build scripts, tests, changelog and evidence are in [UniversalFleetLivery](UniversalFleetLivery/). Read [CHANGELOG.md](UniversalFleetLivery/CHANGELOG.md), [TEST_REPORT.md](UniversalFleetLivery/docs/TEST_REPORT.md) and [IN_GAME_CHECKLIST.md](UniversalFleetLivery/docs/IN_GAME_CHECKLIST.md).
 
-- Ordinary fleet-card thumbnails and campaign fleet silhouettes are **not** recoloured in this alpha.
-- Weapons, engine flames, shields, damage overlays and scripted animated parts keep their own visuals.
-- The algorithm groups colours by image characteristics, not semantic hull components; results vary by source sprite.
-- Existing MagicLib paintjobs take precedence on ships using those paintjobs.
-- Actual in-game save/load and mod-removal safety are **not yet certified**.
+**Author:** Ely K. **License:** MIT for original UFL code and icon. Starsector and third-party artwork remain their respective owners' property. Diable Avionics art credits: Tartiflette and FlashFrozen; maintained by Caymon Joestar.
 
-## Compatibility
-
-Target: **Starsector 0.98a-RC8 / Java 17**. Other game versions have not been verified. No required mod dependencies.
-
-## Source, testing and credits
-
-The supplied 0.1.1-alpha package includes Java sources, build scripts, a changelog, architecture and compatibility notes, test reports and automated test fixtures. These are available in the repository and the complete release package.
-
-**Author:** Ely K  
-**License:** MIT for original UFL code and icon. Starsector and third-party art remain their respective owners' property.
-
-**Diable Avionics art used in test evidence:** Tartiflette and FlashFrozen; maintained by Caymon Joestar.
-
-*Not affiliated with or endorsed by Fractal Softworks.*
+Not affiliated with or endorsed by Fractal Softworks.

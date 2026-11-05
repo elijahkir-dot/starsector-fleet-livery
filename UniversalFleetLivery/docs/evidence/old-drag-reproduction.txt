@@ -1,0 +1,1 @@
+REPRODUCED 0.1.3: picked-up ship temporarily leaves roster, cleanup strips livery before drop

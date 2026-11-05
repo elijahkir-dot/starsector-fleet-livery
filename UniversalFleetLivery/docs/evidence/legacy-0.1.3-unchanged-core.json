@@ -1,0 +1,13 @@
+{
+  "compared_against": "0.1.2-alpha",
+  "byte_identical_classes": {
+    "ufl/Recolor.class": "55425ded1efd3769fd6e991434db03f3030bced64725b74206539888e81743e1",
+    "ufl/NativeTextureBridge.class": "87e11f5b24452ab9bb31370a7354d308e2fe5c1fc21930c0e607f16847504499",
+    "ufl/LiveryTextures.class": "4c2460c3c9d251fb950c2ce5ca5ab069875f625e5c3277be8c01647a354e7bcd",
+    "ufl/LiveryHullmod.class": "93072d31fd48da40963dcf2acb9a8a9b1bc3438b3447a0d168d03c14926c2751",
+    "ufl/LiveryState.class": "7be56874c3c37639f90f2cdf80bb1bb7b6759ac148e74762f34c51262b3df30f",
+    "ufl/LiveryService.class": "15452008c0c02c842f0479baa25aec81e7bd4a92c30017b67896679de65e8996",
+    "ufl/LiveryScript.class": "8820f6e4750821cc96be818c68c923248f99bb4f2963d60cdd88c87c18286ce1",
+    "ufl/LiveryAbility.class": "8027394616ab24963acf3526e73237f20ccabbcc003ffdafe1185b4586de5154"
+  }
+}

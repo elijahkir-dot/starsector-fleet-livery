@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "palettes": [
+    {
+      "id": "imperial",
+      "name": "Imperial - black and gold",
+      "group": "Dark",
+      "primary": "292B32",
+      "secondary": "8E7950",
+      "accent": "E7B94F",
+      "strength": 100
+    },
+    {
+      "id": "naval",
+      "name": "Naval - dark blue and silver",
+      "group": "Military",
+      "primary": "263C62",
+      "secondary": "B6C5D3",
+      "accent": "7599CE",
+      "strength": 100
+    },
+    {
+      "id": "crimson",
+      "name": "Crimson - red and black",
+      "group": "Military",
+      "primary": "9E2937",
+      "secondary": "32323A",
+      "accent": "E04A45",
+      "strength": 100
+    },
+    {
+      "id": "industrial",
+      "name": "Industrial - gunmetal and orange",
+      "group": "Military",
+      "primary": "48515A",
+      "secondary": "8C9396",
+      "accent": "ED812D",
+      "strength": 100
+    },
+    {
+      "id": "arctic",
+      "name": "Arctic - white and blue",
+      "group": "Light",
+      "primary": "D5E3EC",
+      "secondary": "6F94B5",
+      "accent": "347CC2",
+      "strength": 100
+    },
+    {
+      "id": "verdant",
+      "name": "Verdant - forest and bone",
+      "group": "Military",
+      "primary": "28483B",
+      "secondary": "C6C1A8",
+      "accent": "B19452",
+      "strength": 100
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian - charcoal and teal",
+      "group": "Dark",
+      "primary": "232831",
+      "secondary": "606875",
+      "accent": "33B4B0",
+      "strength": 100
+    },
+    {
+      "id": "solar",
+      "name": "Solar - ivory and amber",
+      "group": "Light",
+      "primary": "DDD3B7",
+      "secondary": "AD8A53",
+      "accent": "EF9F28",
+      "strength": 100
+    },
+    {
+      "id": "royal",
+      "name": "Royal - violet and gold",
+      "group": "Colourful",
+      "primary": "51356B",
+      "secondary": "CBC7D6",
+      "accent": "DDB554",
+      "strength": 100
+    },
+    {
+      "id": "cerulean",
+      "name": "Cerulean - blue and cyan",
+      "group": "Colourful",
+      "primary": "194B77",
+      "secondary": "85BFCB",
+      "accent": "2DE0E5",
+      "strength": 100
+    },
+    {
+      "id": "copperhead",
+      "name": "Copperhead - graphite and copper",
+      "group": "Dark",
+      "primary": "343E45",
+      "secondary": "A66B48",
+      "accent": "49B5AC",
+      "strength": 100
+    },
+    {
+      "id": "vanguard",
+      "name": "Vanguard - olive and steel",
+      "group": "Military",
+      "primary": "515A3D",
+      "secondary": "9EA9A8",
+      "accent": "B63A32",
+      "strength": 100
+    },
+    {
+      "id": "ghost",
+      "name": "Ghost - ash and ice",
+      "group": "Light",
+      "primary": "B8C2C7",
+      "secondary": "454D57",
+      "accent": "7CD0D5",
+      "strength": 100
+    },
+    {
+      "id": "dusk",
+      "name": "Dusk - plum and rose",
+      "group": "Colourful",
+      "primary": "493C55",
+      "secondary": "9C97A9",
+      "accent": "DB7E9C",
+      "strength": 100
+    },
+    {
+      "id": "hazard",
+      "name": "Hazard - coal and yellow",
+      "group": "Dark",
+      "primary": "2F3436",
+      "secondary": "8D9190",
+      "accent": "F1C62C",
+      "strength": 100
+    },
+    {
+      "id": "terran",
+      "name": "Terran - green and pearl",
+      "group": "Military",
+      "primary": "244D49",
+      "secondary": "CFD9CF",
+      "accent": "7CB7CE",
+      "strength": 100
+    },
+    {
+      "id": "ceremonial",
+      "name": "Ceremonial - white and burgundy",
+      "group": "Light",
+      "primary": "DDDCD5",
+      "secondary": "66313D",
+      "accent": "C8A658",
+      "strength": 100
+    },
+    {
+      "id": "rustbelt",
+      "name": "Rustbelt - oxide and gunmetal",
+      "group": "Military",
+      "primary": "754B3D",
+      "secondary": "6B777D",
+      "accent": "D08C4A",
+      "strength": 100
+    }
+  ]
+}

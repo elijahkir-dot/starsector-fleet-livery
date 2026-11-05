@@ -1,7 +1,7 @@
 {
-  "release": "0.1.1-alpha",
-  "compiler": "Eclipse ECJ 3.38.0",
-  "jar_sha256_first": "e4652866e0c7d6dcb9d64b7980cc9b05bed4d5ccf9b24401f27c3b35396dbe6f",
-  "jar_sha256_rebuild": "e4652866e0c7d6dcb9d64b7980cc9b05bed4d5ccf9b24401f27c3b35396dbe6f",
+  "release": "0.1.4-alpha",
+  "compiler": "ECJ 3.38.0",
+  "first_jar_sha256": "693667f7b0e3b759570831fa38f7d1696cbc457826d1662656aabc6d7b87772f",
+  "rebuild_jar_sha256": "693667f7b0e3b759570831fa38f7d1696cbc457826d1662656aabc6d7b87772f",
   "byte_identical": true
 }

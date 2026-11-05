@@ -2,10 +2,12 @@
   "id": "universal_fleet_livery",
   "name": "Universal Fleet Livery",
   "author": "Ely K",
-  "version": "0.1.1-alpha",
-  "description": "Procedural fleet liveries, individual exceptions and inherited fleet standards. Early alpha: see compatibility and test reports.",
+  "version": "0.1.4-alpha",
+  "description": "Procedural ship, fleet and empire liveries with independent overrides and 18 factory palettes. Alpha: see compatibility and test reports.",
   "gameVersion": "0.98a-RC8",
   "utility": true,
-  "jars": ["jars/UniversalFleetLivery.jar"],
+  "jars": [
+    "jars/UniversalFleetLivery.jar"
+  ],
   "modPlugin": "ufl.LiveryModPlugin"
 }

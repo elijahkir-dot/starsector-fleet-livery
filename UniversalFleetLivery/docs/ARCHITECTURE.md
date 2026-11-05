@@ -1,63 +1,51 @@
-# Architecture
+# Architecture — 0.1.4
 
-## Chosen rendering path
+## Rendering
 
-Source resource → in-memory ImageIO decode → automatic continuous masks → recoloured BufferedImage → native RC8 image registration → `SettingsAPI.getSprite()` → `ShipAPI.setSprite(SpriteAPI)`.
+Game resource → in-memory ImageIO decode → automatic luminance/chroma masks → recoloured BufferedImage → native RC8 image registration → SettingsAPI.getSprite → ShipAPI.setSprite.
 
-Resource reading and per-ship sprite swapping use public APIs. The isolated NativeTextureBridge uses one verified internal RC8 image-registration method; see the version constraint below. The runtime does not intercept shaders or change shared hull assets. Each generated texture is shared by ships using the same source and palette, while each ship receives its own SpriteAPI wrapper and transform. Original size, centre, angle, alpha, tint, blend function and texture region are copied to preserve placement. Hull outlines, bounds, armor grids, hardpoints, weapons and stats are not changed.
+The renderer and native bridge are unchanged from 0.1.3; `evidence/unchanged-renderer.json` verifies the relevant class bytes. Each source/palette texture is reused, while individual ships receive their own SpriteAPI wrappers/transforms. Source alpha, dimensions, centre, angle and texture region are preserved. Hull bounds, armour, hardpoints, weapons and stats are untouched. Shared hull specifications and stock variants are never painted globally.
 
-Original sprites are read using relative resource names via `SettingsAPI.openStream()`; resource precedence remains the engine's responsibility. Byte arrays are assembled without blocked ByteArrayOutputStream; MemoryCacheImageInputStream prevents ImageIO disk caching. The actual restricted-loader fixture verifies decoding, generation and native rendering.
+CPU baking was chosen because no verified public hook attaches a shader to all existing ship and thumbnail draws. It costs generation time once per source/palette, rather than a new custom draw pass for every ship. It preserves source detail but cannot infer semantic armour regions. Creator masks, decals and more channels remain extension possibilities, not implemented features.
 
-## Why procedural baking
+Sources use SettingsAPI.openStream and explicit MemoryCacheImageInputStream, without disk caching or blocked file/reflection APIs. NativeTextureBridge binds one of the two verified public internal RC8 image-registration signatures through permitted MethodHandles. Actual restricted-loader native tests are included. The public hullmod/sprite pattern was researched using published mod examples; UFL source and assets are independent.
 
-| Candidate | Decision |
-|---|---|
-| Multiplicative sprite tint | Can darken pixels but cannot replace the original hue or produce convincing white paint; poor black/gold control. |
-| Runtime shader | Possible through OpenGL, but no verified public hook attaches a shader to every existing ship draw and every native fleet/refit thumbnail. A combat overlay would also need to preserve occlusion, damage layers and shader state. Not selected. |
-| Per-hull manual palettes/masks | Highest artistic control; contradicts the initial universal/no-manual-assets goal. A future optional mask provider can improve selected hulls. |
-| CPU procedural image generation | Works with ordinary image resources, incurs no custom shader/draw pass per ship, and preserves the engine's own rendering path. Selected and exercised through RC8's actual renderer. |
+## Policy and migration
 
-The algorithm maps source luminance into paint shading, uses chroma to infer existing markings, and blends bright highlights. It preserves alpha byte-for-byte and never changes source dimensions. It does not discover meaningful primary/secondary regions from geometry. Saturated full-hull paint and baked-in engines can be recoloured as accent. This is an artistic limit rather than a claim of universal segmentation.
+LiveryState persists only JDK maps, strings and booleans under the existing `ufl_settings_v1` sector key, with schema string `2`. It stores empire, active-fleet override/inheritance, per-NPC-fleet overrides keyed by fleet ID, per-ship overrides keyed by fleet-member ID, and legacy active-fleet hull/size maps.
 
-## Components
+Resolution: ship → active-fleet hull → active-fleet size → owning fleet → empire. Hull/size maps are ignored outside the active fleet. Missing fleet rules inherit. Explicit Original stops inheritance. Global disable resolves Original everywhere.
 
-- `Palette`, `Palettes`, `Recolor`: immutable palettes and deterministic pixel processing, independent of Starsector.
-- `LiveryState`: pure policy and primitive-only save data. Order: ship > base hull > size > default. A shared Custom template supports global edits.
-- `LiveryService`: active-player ownership, clone-before-decoration, module recursion, membership changes, pre-save cleanup and one-source-per-frame prewarming. The original stock variant and shared hull specs are left alone.
-- `LiveryTextures`: source decoding, limits, SHA-256 identity, in-memory native registration, session caching and failure deduplication. Original data and derived images are separate.
-- `LiveryHullmod`: hidden zero-OP runtime attachment. Its ship-creation hook swaps the native SpriteAPI. It also requests the optional GraphicsLib diffuse-texture override when that mod is present.
-- `LiveryDialog`, `LiveryAbility`: campaign menu and preview using supported public UI APIs. No private refit-panel injection.
-- `LiveryModPlugin`, `LiveryScript`: application configuration, runtime environment log, transient campaign sync and save callbacks.
-- `data.missions.ufl_showcase.MissionDefinition`: repeatable, real-game acceptance fixture using Wolves.
+Factory rules use stable palette IDs. Custom assignments use `paint:` plus immutable Palette.encode data. The last-used Custom draft is separate. Migrating schema 1 snapshots each old shared-Custom assignment and preserves existing active-fleet policy. A newly created state inherits empire by default. No mod-defined object is stored in these preferences.
 
-## Ownership and persistence
+`standardizeFleet` clears only the supplied fleet's current ship overrides; for the active fleet it also clears legacy hull/size rules. Other fleets and the empire remain independent. The root restore action assigns Original to the active fleet rather than clearing the empire.
 
-Only active player-fleet variants are decorated. Member IDs determine individual preferences; base hull IDs and size enums determine class rules. Active ship variants are cloned before changes; module variants are cloned recursively. Variants are marked REFIT so a modified clone is treated as owned refit data. The implementation never changes the shared `ShipHullSpecAPI`.
+## Ownership and runtime lifecycle
 
-On removal from the active fleet, UFL removes its own hullmod and palette tag from its tracked member object. It retains primitive preference records, allowing the same member ID to regain its exception when returned. NPC fleets do not inherit the player default. A newly recovered ship with a different member ID uses the default/class rules.
+LiveryService enumerates the active player fleet and inflated non-station fleets across SectorAPI.getAllLocations, filtered by exact player-faction ID. It checks isInflated before reading NPC FleetData, avoiding forced hidden-fleet inflation. Ships in station fleets, storage and production lists are excluded. Member-ID exceptions may return with a ship; new IDs resolve as new acquisitions.
 
-Before save, runtime hullmods/tags and ability objects are stripped. The campaign script is transient. After save or a failed save, UFL reinstalls its runtime attachments. Real campaign serialization, refit cache invalidation and ability-bar behaviour remain acceptance requirements. Cleanup cannot see variants copied by unrelated mods into private storage.
+LiveryScript syncs the active fleet every 350 ms and scans eligible empire fleets/cleans departed members every 2 seconds, including while paused. EmpireFleetListener uses the public FleetInflationListener callback and is registered transiently and idempotently. An early callback while still dormant is ignored; the regular scan catches it later. There is no off-thread OpenGL or mass NPC prewarming.
 
-## Performance and failure modes
+Variants are cloned before adding the zero-OP hidden runtime hullmod/tag, marked REFIT, and module variants recursively cloned/decorated (depth limit 12). Existing MagicLib paintjob tags cause UFL to yield. The hullmod swaps only the per-instance sprite. Before save, all tracked member attachments, plus active members, are stripped; the ability is removed. The transient script/listener introduce no campaign-owned mod class. After save or save failure the ability and runtime attachments are rebuilt. Unknown variant/ability copies inside another mod's private persistence remain outside this boundary.
 
-Texture generation happens once per source/palette combination per session. Generated textures are not persisted on disk; saved palettes reconstruct them as needed. Main-thread work avoids calling OpenGL from worker threads. One uncached active-fleet source is warmed each frame; immediate preview or an unwarmed combat spawn can still cause a first-use pause. Cached draws use ordinary native sprite rendering. No battle-FPS claim has been measured.
+## Fleet-screen drag regression
 
-The source-image LRU holds at most 12 decoded images. Source files are capped at 32 MiB and decoded dimensions are checked before full decoding. The default per-image ceiling is 4 million pixels. Generated GPU texture estimates include power-of-two dimensions and mipmaps. Session caps prevent uncontrolled texture growth. Loaded textures are not evicted while live engine sprites may reference them. Reaching a cap leaves new requests at original appearance and reports the reason; restart or increase the limit.
+Inspection of actual RC8 fleet UI code found removeFleetMemberAtIndex during pickup, then setFleetMemberAtIndex/swapMembers during placement. Old cleanup interpreted temporary roster absence as a departure and stripped paint.
 
-Errors are deduplicated per source/palette. The menu can retry skipped requests. Invalid Custom input stays in the editor. Missing/unsupported sprites, oversized images and texture-budget exhaustion preserve original appearances. No source asset is rewritten and no generated files are written.
+While the public campaign UI reports CoreUITabId.FLEET, members() retains previously tracked active-fleet objects absent from the roster whose FleetData is null or still points to the same fleet. It does not alter the real roster. This keeps their cosmetic variant alive during pickup and save callbacks. A confirmed transfer to another fleet is not retained; otherwise cleanup resumes on leaving the fleet screen. It can deliberately defer cleanup of a true removal until that screen closes.
 
-## Integration boundaries and extension seams
+The old JAR reproduces the failure in the regression fixture; the updated JAR preserves paint through pickup/drop and still strips it after a real departure. A live user gesture retest remains pending. No private UI renderer interception or shared-sprite override was added.
 
-MagicLib's published paintjob path uses a hidden hullmod and native sprite swap; its refit button injects panels using private/reflection helpers. UFL adopts the public hullmod/sprite pattern with independently implemented code and a separate public campaign UI. Active `ML_paintjob-` tags cause UFL to yield rather than compete. Other unrecognised sprite-swapping hullmods can still conflict.
+## UI and extension seams
 
-GraphicsLib is optional: a small isolated reflective call to its verified `overrideShipTexture(ShipAPI, String)` method avoids a compile/runtime dependency. If unavailable, base rendering remains and lighting may use original colours. This integration has not been exercised with GraphicsLib loaded.
+Public InteractionDialogAPI provides root → scope → palette preview/apply. The native ship grid handoff is deferred one full frame after picker teardown. PaletteSwatches/preview drawing uses the existing tested callbacks. Utilities contains hull/size rules, diagnostics and the global switch. There is no refit-panel injection or new keyboard handler.
 
-Future fleet providers can reuse `LiveryState.resolveId()` and `LiveryService.decorate()` for faction NPC fleets and colony defence fleets, with a separate ownership policy. Manufactured ships already inherit upon joining the active player fleet. Optional hull masks, additional templates and explicit glow/weapon integrations belong behind the recolour/texture interfaces. They do not require replacing the save schema.
+Palette, Recolor, LiveryState and LiveryService expose separable colour/policy/application functions. Another mod can use the plain rule maps and immutable snapshots for future manufacturing/NPC automation. Fleet IDs are engine-owned; a recreated fleet with a new ID inherits anew. Manual brush masks, named custom libraries, decals and patterns are not part of this release.
 
-## Script security and RC8 constraint
+## Performance and failure handling
 
-0.1.0-alpha used blocked java.io/file classes and an optional reflective adapter. Earlier ordinary-loader renderer tests missed that restriction. The 0.1.1 fixture reproduces the old failure and tests production classes behind the actual game blacklist.
+Cached native sprites render normally. Main-fleet prewarming handles one uncached source/palette per frame. First use in preview or an NPC combat spawn can still pause for generation. No real battle-FPS or large-empire scan benchmark is claimed.
 
-NativeTextureBridge isolates `com.fs.graphics.oOoO.o00000(String, BufferedImage)`, verified against official 0.98a-RC8. This method registers an image in the same native registry used by normal sprites. It requires neither filesystem access nor reflection. It is an internal version-specific engine symbol, not a stable public API. Other RC builds must be retested; a missing/incompatible registrar is converted to a reported texture error so the original appearance remains. No support for arbitrary future builds is claimed.
+Source-image LRU: 12 decoded images; encoded resource ceiling: 32 MiB. Default source-pixel ceiling: 4,194,304. Session generated-texture count and estimated GPU budget: 256 / 256 MiB, including padded dimensions/mipmaps. Live native textures are not evicted while engine sprites may refer to them. Budget exhaustion leaves new requests original; restart or adjust configuration.
 
-The optional GraphicsLib call uses public MethodHandles lookup, which RC8's script loader allows. Only its public `overrideShipTexture(ShipAPI,String)` signature is invoked. No private-access lookup or security modification is used. A signature fixture verifies dispatch; real-library lighting acceptance is pending.
+Per-ship incompatibilities and texture errors are logged/deduplicated; retry is available in Utilities. Failure preserves the original sprite. No original files, generated PNGs or runtime caches are written.

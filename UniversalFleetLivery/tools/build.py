@@ -62,15 +62,20 @@ def main():
         run(compiler + ['-classpath', str(classes)+os.pathsep+classpath, '-d', str(tests)] + list(map(str, sorted((ROOT/'tests').rglob('*.java')))))
         testcp = os.pathsep.join([str(classes), str(tests), classpath])
         logs = [run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.CoreTest', str(core)]),
-                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.LifecycleTest'])]
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.LifecycleTest']),
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.CatalogueTest']),
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.DialogTest']),
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.ScopeTest']),
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.DragRegressionTest']),
+                run([java, '-Djava.awt.headless=true', '-cp', testcp, 'ufl.EmpireLifecycleTest'])]
         (ROOT/'docs/evidence').mkdir(parents=True, exist_ok=True)
         (ROOT/'docs/evidence/automated-tests.txt').write_text('\n'.join(logs), encoding='utf-8')
-        report['tests'] = 'CoreTest and LifecycleTest passed; not live campaign tests'
+        report['tests'] = 'CoreTest, LifecycleTest, CatalogueTest, DialogTest, ScopeTest, DragRegressionTest and EmpireLifecycleTest passed; not live campaign tests'
     (ROOT/'docs/evidence').mkdir(parents=True, exist_ok=True)
     (ROOT/'docs/evidence/build.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     if args.package:
         files = [p for p in ROOT.rglob('*') if p.is_file() and not any(x in p.relative_to(ROOT).parts for x in ('build','cache','dist','__pycache__','.git'))]
-        out = ROOT / 'dist/UniversalFleetLivery-0.1.1-alpha.zip'
+        out = ROOT / 'dist/UniversalFleetLivery-0.1.4-alpha.zip'
         archive(files, out, ROOT.parent)
         print('Packaged:', out)
     print('Built:', jar)

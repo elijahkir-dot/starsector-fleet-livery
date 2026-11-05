@@ -5,15 +5,19 @@ import com.fs.starfarer.api.Global;
 
 /** Transient campaign script: no Java mod object is serialized into the save. */
 public final class LiveryScript implements EveryFrameScript {
-  private long nextScan;
+  private long nextScan, nextEmpireScan;
   private boolean warned;
 
   public void advance(float amount) {
     try {
       long now = System.nanoTime();
       if (now >= nextScan) {
-        LiveryService.sync();
+        LiveryService.syncPlayer();
         nextScan = now + 350000000L;
+      }
+      if (now >= nextEmpireScan) {
+        LiveryService.sync();
+        nextEmpireScan = now + 2000000000L;
       }
       LiveryService.warmOne();
     } catch (Exception e) {

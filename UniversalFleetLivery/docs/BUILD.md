@@ -65,8 +65,24 @@ Build the JAR first. With a working OpenGL display and RC8 native dependencies a
 python3 tools/test_script_security.py --game /path/to/rc8 --java /path/to/rc8/jre_linux/bin/java
 ```
 
-Add `--ecj /path/to/ecj-3.38.0.jar` if javac is unavailable. The helper compiles only `security-tests/` into the unrestricted harness, excludes production classes from its application classpath, and loads the mod JAR through RC8's actual restricted loader. It verifies that forbidden classes remain forbidden. Capture stdout/stderr as `docs/evidence/script-security-tests.txt`. It also writes `security-renderer.png`. Linux/Xvfb/Mesa is the verified native environment; Windows/macOS execution of this helper has not been tested.
+Add `--ecj /path/to/ecj-3.38.0.jar` if javac is unavailable. The helper compiles only `security-tests/` into the unrestricted harness, excludes production classes from its application classpath, and loads the mod JAR through RC8's actual restricted loader. It verifies that forbidden classes remain forbidden. The helper requires the final completed-assertions marker as well as a zero exit code for the fixed suite. Capture stdout/stderr as `docs/evidence/script-security-tests.txt`. It also writes `security-renderer.png`. Linux/Xvfb/Mesa is the verified native environment; Windows/macOS execution of this helper has not been tested.
 
 To reproduce the previous release, extract its original mod directory separately, then add `--mod /path/to/original/ModDirectory --expect-legacy-error`. This mode succeeds only when the old pipeline reproduces the security message. Original mod JARs and game libraries are not bundled in this release.
 
 The harness alone uses reflection to set devMode=false, install resource roots and instantiate real RC8 settings, as the launcher normally would. This does not grant the production JAR additional privileges. Test-only ShaderLib implements a signature check and is excluded from the production JAR.
+
+## Windows/Linux RC8 verification added in 0.1.2
+
+The production JAR compiles byte-identically against both official distributions. The preferred security fixture detects RC8's Windows loader B/resource root C or Linux loader new/resource root, instead of assuming the Linux bootstrap.
+
+A cross-distribution Java test on a Linux host can use Windows game JARs with Linux native libraries through `--native-dir /path/to/linux/native/linux`. Both distributions still require legitimate local game resources. It is not a Windows OS test. The original 0.1.1 failure can be reproduced with `--mod /path/to/old/ModDirectory --expect-registration-error` against Windows game JARs. Source/game binaries are not bundled or automatically fetched by these helpers.
+
+Current native evidence is under `evidence/windows-fixed-renderer.txt` and `evidence/linux-fixed-renderer.txt`; earlier native logs are historical. The public symbol binding differs between the two official RC8 distributions despite identical version labels.
+
+## 0.1.4 test suite
+
+The verified Python --test route runs CoreTest, LifecycleTest, CatalogueTest, DialogTest, ScopeTest, DragRegressionTest and EmpireLifecycleTest. The last four use real API interfaces with test doubles; they do not simulate a licensed campaign. The native security fixture additionally runs the actual palette swatch and ship-preview callbacks for all 18 palettes through the restricted loader.
+
+To reproduce the drag bug against an extracted original 0.1.3 JAR, compile current tests first, then place that old JAR ahead of production classes on the test runtime classpath and run `ufl.DragRegressionTest old`. This mode succeeds only when old cleanup strips a picked-up ship. Do not put the old JAR into the installed mod. The recorded reproduction is in evidence/old-drag-reproduction.txt.
+
+Current reproducibility and byte-identical renderer comparisons are in evidence/reproducibility.json and evidence/unchanged-renderer.json. Historical cross-distribution logs remain included; the 0.1.4 compile/native run used Linux RC8. No Windows desktop or live campaign test is implied.

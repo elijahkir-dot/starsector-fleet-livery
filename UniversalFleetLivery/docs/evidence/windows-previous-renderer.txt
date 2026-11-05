@@ -1,0 +1,17 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+SECURITY_LOADER=com.fs.starfarer.loading.scripts.B
+GL_RENDERER=llvmpipe (LLVM 20.1.2, 256 bits)
+1    [main] WARN  ufl.LiveryTextures  - UFL: leaving original appearance: graphics/ships/wolf/wolf_base.png: In-memory texture registration unavailable; this mod targets Starsector 0.98a-RC8
+java.io.IOException: In-memory texture registration unavailable; this mod targets Starsector 0.98a-RC8
+	at ufl.NativeTextureBridge.register(NativeTextureBridge.java:16)
+	at ufl.LiveryTextures.get(LiveryTextures.java:75)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at security.ScriptSecurityTest.call(ScriptSecurityTest.java:32)
+	at security.ScriptSecurityTest.main(ScriptSecurityTest.java:222)
+Caused by: java.lang.NoSuchMethodError: 'void com.fs.graphics.oOoO.o00000(java.lang.String, java.awt.image.BufferedImage)'
+	at ufl.NativeTextureBridge.register(NativeTextureBridge.java:13)
+	... 7 more
+REPRODUCED 0.1.1 ERROR: graphics/ships/wolf/wolf_base.png: In-memory texture registration unavailable; this mod targets Starsector 0.98a-RC8

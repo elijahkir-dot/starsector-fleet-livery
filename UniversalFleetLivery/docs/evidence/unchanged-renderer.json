@@ -1,0 +1,14 @@
+{
+  "release": "0.1.4-alpha",
+  "compared_against": "0.1.3-alpha",
+  "byte_identical_classes": {
+    "ufl/LiveryHullmod.class": "93072d31fd48da40963dcf2acb9a8a9b1bc3438b3447a0d168d03c14926c2751",
+    "ufl/LiveryTextures$1.class": "88a0ee3ca207bd82fef7166f1c160cf527d108925f23fbc12a8ee67917ab0a24",
+    "ufl/LiveryTextures$Source.class": "6dbb1733ce31cb7beb9ac14d486e50edfa73b8b1eba938efb82d6c397ac624c3",
+    "ufl/LiveryTextures.class": "4c2460c3c9d251fb950c2ce5ca5ab069875f625e5c3277be8c01647a354e7bcd",
+    "ufl/NativeTextureBridge.class": "87e11f5b24452ab9bb31370a7354d308e2fe5c1fc21930c0e607f16847504499",
+    "ufl/Palette.class": "25c9e6ae6745b8f26ed1f8480da42d46e0068703c482fcd2c8aed6a7f960caaf",
+    "ufl/Recolor.class": "55425ded1efd3769fd6e991434db03f3030bced64725b74206539888e81743e1"
+  },
+  "note": "Policy, service, script and menu are changed and are not included in this unchanged-renderer claim."
+}
